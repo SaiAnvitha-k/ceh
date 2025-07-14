@@ -83,7 +83,7 @@
   * `nmap -p 25 --script=smtp-enum-users [IP]`
   * `nmap -p 25 --script=smtp-open-relay [IP]`
   * `nmap -p 25 --script=smtp-commands [IP]`
-* **SMB**: Enumeration & detection
+* **SMB**: nmap --script smb-security-mode -p 445 192.168.0.51
 
 ## Vulnerability Analysis
 
