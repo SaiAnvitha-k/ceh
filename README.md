@@ -20,7 +20,8 @@
 * **Access tools in Windows**: `Ctrl+L >> smb://[IP]`
 
 ## Scanning
-
+   ** subdomains : sublist3r -d example.com
+   ssh vulnerability: nmap -p 22 --script ssh-brute,ssh2-enum-users 192.168.X.X
 * **GUI Network Scanners**: MegaPing, NetScanTools Pro
 * **Nmap**:
 
@@ -33,7 +34,8 @@
   * `hping3 -A [IP] -p 80 -c 5`
   * `hping3 --scan 0-100 -S [IP]`
   * `hping3 -8 0-100 -S [IP] -V`
-
+* ftp bufferoverflow check:
+* nmap -sV --script ftp-vsftpd-backdoor,ftp-proftpd-backdoor 192.168.0.11
 ## Enumeration
 
 * **NetBIOS (Windows)**:
@@ -47,7 +49,8 @@
   * `nmap -sU -p 137 --script nbstat.nse [IP]`
 * **SNMP**:
 
-  * `snmp-check [IP]`
+  * snmpwalk -v2c -c public 192.168.1.10
+  *  `snmp-check [IP]`
   * **GUI**: SoftPerfect Network Scanner
   * `snmpwalk -v1 -c public [IP]`
   * `snmpwalk -v2c -c public [IP]`
@@ -83,8 +86,13 @@
   * `nmap -p 25 --script=smtp-enum-users [IP]`
   * `nmap -p 25 --script=smtp-open-relay [IP]`
   * `nmap -p 25 --script=smtp-commands [IP]`
-* **SMB**: nmap --script smb-security-mode -p 445 192.168.0.51
-
+* **SMB**:
+  *nmap --script smb-security-mode -p 445 192.168.0.51
+  * enumerate smb shares:
+  * smbclient -L //192.168.1.10 -U anonymous
+  *shares enum4linux -S 192.168.1.10
+  * users : enum4linux -U 192.168.1.33
+  * check eternalblue vulnerability -nmap -p 445 --script smb-vuln-ms17-010 192.168.10.5
 ## Vulnerability Analysis
 
 * **OpenVAS**
@@ -107,11 +115,15 @@
   * `snow -C -p "magic" readme2.txt`
   * Tools: OpenStego, [https://stegonline.georgeom.net/upload](https://stegonline.georgeom.net/upload)
 
+  **Detect NTFS ADS in readme.txt
+  *dir /R readme.txt
+
 ## Malware Analysis
 
 * **Static**:
 
   * BinText, DIE, PE Explorer, Ghidra
+  * EXIF metadata - exiftool hidden.jpg
 * **Dynamic**:
 
   * TCPView, Reg Organizer
@@ -122,6 +134,9 @@
 * **MacChanger (Linux)**: `macchanger -a eth0`
 * **Cain & Abel**: ARP poisoning detection
 * **Nmap**: `--script=sniffer-detect [IP]`
+** Capture http credentials on eth0
+  *tcpdump -i eth0 port 80
+  * responder -I eth0
 
 ## Social Engineering
 
@@ -158,6 +173,8 @@
 ## Brute Force
 
 * `hydra -L [Usernames.txt] -P [Passwords.txt] ftp://[IP]`
+* hydra -L user.txt -P pass.txt ssh://192.168.0.10
+*  find default credentials: hydra -L users.txt -P passwords.txt http-get://192.168.1.1
 
 ## Web Application Hacking
 
@@ -165,6 +182,8 @@
 
   * `whatweb -v [Target]`
   * `whatweb --log-verbose=Report TARGET.COM`
+  **Find login forms and WP installs
+  *wpscan --url http://internal.dev  
 * **Load Balancer Detection**:
 
   * `dig yahoo.com`, then `lbd yahoo.com`
@@ -228,6 +247,7 @@
 
 * **WEP**: `aircrack-ng [path.cap]`
 * **WPA2**: `aircrack-ng -a2 -b [BSSID] -w [wordlist] [packet.cap]`
+* extract wifi saved passwords in windows: netsh wlan show profiles
 
 ## Mobile Platform Hacking
 
